@@ -52,7 +52,6 @@ var UI = (function(){
                     clickableClass : "swiper-pagination-clickable",
                     currentClass : "swiper-pagination-current",
                 },
-                effect : "fade"
             });
 
             $('#CompanySlider').slick({
@@ -224,7 +223,39 @@ var UI = (function(){
 					header.removeClass("isScroll");
 				}
 			});
-		},        
+		},
+        tab : function(_el){
+            var tab = $("#"+_el);
+            var tabLink = tab.find(".TabLink");
+            var tabContent = tab.find(".TabContent");
+            var hash = location.hash;
+            return {
+                activeIndex : 0,
+                init : function(_index){
+                    var that = this;
+                    that.activeIndex = _index ;
+                    if( hash ){
+                        that.activeIndex = hash.replace("#", "");
+                    }
+
+                    that.open();
+    
+                    tabLink.children("a").on("click", function(){
+                        that.activeIndex = $(this).attr("tabIndex");
+                        console.log(that.activeIndex);
+                        that.open();
+                    });
+                },
+                open : function(){
+                    var that = this;
+                    tabContent.removeClass("active");
+                    tabContent.eq(that.activeIndex).addClass("active");
+                    location.hash = that.activeIndex;
+                    tabLink.children('a').removeClass("active");
+                    tabLink.children('a').eq(that.activeIndex).addClass("active");
+                }
+            }
+        },            
     }
 })();
 
